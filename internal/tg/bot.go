@@ -2,17 +2,24 @@ package tg
 
 import (
 	"callgpt/configs"
+	"callgpt/internal/chat"
 
 	"gopkg.in/telebot.v4"
 )
 
 type Bot struct {
-	tele *telebot.Bot
+	tele        *telebot.Bot
+	chatService *chat.ChatService
 }
 
-func NewBot(config configs.BotConfig) (*Bot, error) {
+type BotDeps struct {
+	Config      *configs.BotConfig
+	ChatService *chat.ChatService
+}
+
+func NewBot(deps *BotDeps) (*Bot, error) {
 	settings := telebot.Settings{
-		Token: config.Token,
+		Token: deps.Config.Token,
 	}
 
 	tele, err := telebot.NewBot(settings)
@@ -21,23 +28,24 @@ func NewBot(config configs.BotConfig) (*Bot, error) {
 		return nil, err
 	}
 
-	bot := &Bot{
-		tele: tele,
+	b := &Bot{
+		tele:        tele,
+		chatService: deps.ChatService,
 	}
 
-	bot.initHandlers()
+	b.initHandlers()
 
-	return bot, nil
+	return b, nil
 }
 
-func (bot *Bot) initHandlers() {
-	bot.tele.Handle("/hello", bot.HelloCommand)
+func (b *Bot) initHandlers() {
+	b.tele.Handle("/hello", b.helloCommand)
 }
 
-func (bot *Bot) HelloCommand(c telebot.Context) error {
+func (b *Bot) helloCommand(c telebot.Context) error {
 	return c.Send("Hello!")
 }
 
-func (bot *Bot) Start() {
-	bot.tele.Start()
+func (b *Bot) Start() {
+	b.tele.Start()
 }

@@ -2,13 +2,21 @@ package main
 
 import (
 	"callgpt/configs"
+	"callgpt/internal/chat"
+	"callgpt/internal/openai"
 	"callgpt/internal/tg"
 )
 
 func main() {
-	config := configs.LoadConfig()
+	conf := configs.LoadConfig()
 
-	b, err := tg.NewBot(config.Bot)
+	openaiClient := openai.NewClient(conf.OpenAI)
+	chatService := chat.NewChatService(openaiClient)
+
+	b, err := tg.NewBot(&tg.BotDeps{
+		Config:      &conf.Bot,
+		ChatService: chatService,
+	})
 
 	if err != nil {
 		panic(err.Error())
