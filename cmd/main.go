@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"callgpt/configs"
+	"callgpt/internal/tg"
+)
 
 func main() {
-	fmt.Println("SUCCESS START")
+	config := configs.LoadConfig()
+
+	b := tg.NewBot(config.Bot)
+
+	b.Start()
 }
