@@ -6,20 +6,38 @@ import (
 	"gopkg.in/telebot.v4"
 )
 
-func NewBot(config configs.BotConfig) *telebot.Bot {
+type Bot struct {
+	tele *telebot.Bot
+}
+
+func NewBot(config configs.BotConfig) (*Bot, error) {
 	settings := telebot.Settings{
 		Token: config.Token,
 	}
 
-	b, err := telebot.NewBot(settings)
+	tele, err := telebot.NewBot(settings)
 
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
-	b.Handle("/hello", func(c telebot.Context) error {
-		return c.Send("Hello!")
-	})
+	bot := &Bot{
+		tele: tele,
+	}
 
-	return b
+	bot.initHandlers()
+
+	return bot, nil
+}
+
+func (bot *Bot) initHandlers() {
+	bot.tele.Handle("/hello", bot.HelloCommand)
+}
+
+func (bot *Bot) HelloCommand(c telebot.Context) error {
+	return c.Send("Hello!")
+}
+
+func (bot *Bot) Start() {
+	bot.tele.Start()
 }

@@ -8,7 +8,11 @@ import (
 func main() {
 	config := configs.LoadConfig()
 
-	b := tg.NewBot(config.Bot)
+	b, err := tg.NewBot(config.Bot)
+
+	if err != nil {
+		panic(err.Error())
+	}
 
 	b.Start()
 }
