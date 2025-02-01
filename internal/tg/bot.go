@@ -3,6 +3,7 @@ package tg
 import (
 	"callgpt/configs"
 	"callgpt/internal/chat"
+	"callgpt/internal/tg/handlers"
 
 	"gopkg.in/telebot.v4"
 )
@@ -39,11 +40,8 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 }
 
 func (b *Bot) initHandlers() {
-	b.tele.Handle("/hello", b.helloCommand)
-}
-
-func (b *Bot) helloCommand(c telebot.Context) error {
-	return c.Send("Hello!")
+	handlers.NewHelloHandler(b.tele)
+	handlers.NewStartHandler(b.tele)
 }
 
 func (b *Bot) Start() {
