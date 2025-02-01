@@ -11,11 +11,11 @@ func main() {
 	conf := configs.LoadConfig()
 
 	openaiClient := openai.NewClient(conf.OpenAI)
-	chatService := chat.NewChatService(openaiClient)
+	openaiService := chat.NewOpenAIChatService(openaiClient)
 
 	b, err := tg.NewBot(&tg.BotDeps{
 		Config:      &conf.Bot,
-		ChatService: chatService,
+		ChatService: openaiService,
 	})
 
 	if err != nil {

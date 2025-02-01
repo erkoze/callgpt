@@ -10,12 +10,12 @@ import (
 
 type Bot struct {
 	tele        *telebot.Bot
-	chatService *chat.ChatService
+	chatService chat.ChatService
 }
 
 type BotDeps struct {
 	Config      *configs.BotConfig
-	ChatService *chat.ChatService
+	ChatService chat.ChatService
 }
 
 func NewBot(deps *BotDeps) (*Bot, error) {
@@ -42,6 +42,11 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 func (b *Bot) initHandlers() {
 	handlers.NewHelloHandler(b.tele)
 	handlers.NewStartHandler(b.tele)
+
+	handlers.NewTextHandler(&handlers.TextHandlerDeps{
+		Bot:         b.tele,
+		ChatService: b.chatService,
+	})
 }
 
 func (b *Bot) Start() {
