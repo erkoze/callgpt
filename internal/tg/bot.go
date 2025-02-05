@@ -49,7 +49,7 @@ func (b *Bot) initHandlers() {
 		ChatService: b.ChatService,
 	})
 
-	handlers.NewDrawHandler(&handlers.DrawHandlerDeps{
+	handlers.NewImgHandler(&handlers.ImgHandlerDeps{
 		Bot:         b.Tele,
 		ChatService: b.ChatService,
 	})
@@ -58,7 +58,7 @@ func (b *Bot) initHandlers() {
 func (b *Bot) getCommands() []telebot.Command {
 	return []telebot.Command{
 		{Text: "start", Description: "Перезапуск"},
-		{Text: "draw", Description: "Нарисовать изображение"},
+		{Text: "img", Description: "Сгенерировать изображение"},
 	}
 }
 

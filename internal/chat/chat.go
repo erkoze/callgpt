@@ -10,7 +10,7 @@ import (
 
 type ChatService interface {
 	GetAnswer(ctx context.Context, prompt string) (string, error)
-	Draw(ctx context.Context, prompt string) (string, error)
+	GenerateImage(ctx context.Context, prompt string) (string, error)
 }
 
 type OpenAIChatService struct {
@@ -43,7 +43,7 @@ func (s *OpenAIChatService) GetAnswer(ctx context.Context, prompt string) (strin
 	return res.Choices[0].Message.Content, nil
 }
 
-func (s *OpenAIChatService) Draw(ctx context.Context, prompt string) (string, error) {
+func (s *OpenAIChatService) GenerateImage(ctx context.Context, prompt string) (string, error) {
 	reqUrl := goopenai.ImageRequest{
 		Prompt:         prompt,
 		Size:           goopenai.CreateImageSize1024x1024,
