@@ -24,7 +24,7 @@ func NewOpenAIChatService(client *openai.Client) *OpenAIChatService {
 
 func (s *OpenAIChatService) GetAnswer(ctx context.Context, prompt string) (string, error) {
 	res, err := s.client.CreateChatCompletion(ctx, goopenai.ChatCompletionRequest{
-		Model: goopenai.GPT4oMini,
+		Model: goopenai.GPT4o,
 		Messages: []goopenai.ChatCompletionMessage{
 			{
 				Role:    goopenai.ChatMessageRoleUser,

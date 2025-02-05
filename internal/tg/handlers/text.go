@@ -25,17 +25,11 @@ func NewTextHandler(deps *TextHandlerDeps) {
 }
 
 func (h *textHandler) handle(c telebot.Context) error {
-	openaiIsEnabled := false
-
-	if !openaiIsEnabled {
-		return c.Send("OpenAI временно отключен")
-	}
-
 	res, err := h.chatService.GetAnswer(context.Background(), c.Text())
 
 	if err != nil {
 		return err
 	}
 
-	return c.Send(res)
+	return c.Send(res, telebot.ModeMarkdownV2)
 }
