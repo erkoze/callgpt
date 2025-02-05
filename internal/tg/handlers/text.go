@@ -29,11 +29,11 @@ func (h *textHandler) handle(c telebot.Context) error {
 		return c.Send("Вам не разрешено использовать бота")
 	}
 
-	res, err := h.chatService.GetAnswer(context.Background(), c.Text())
+	message, err := h.chatService.CreateChatCompletion(context.Background(), c.Text())
 
 	if err != nil {
 		return err
 	}
 
-	return c.Send(res)
+	return c.Send(message)
 }

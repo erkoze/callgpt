@@ -9,7 +9,7 @@ import (
 )
 
 type ChatService interface {
-	GetAnswer(ctx context.Context, prompt string) (string, error)
+	CreateChatCompletion(ctx context.Context, prompt string) (string, error)
 	GenerateImage(ctx context.Context, prompt string) (string, error)
 }
 
@@ -23,7 +23,7 @@ func NewOpenAIChatService(client *openai.Client) *OpenAIChatService {
 	}
 }
 
-func (s *OpenAIChatService) GetAnswer(ctx context.Context, prompt string) (string, error) {
+func (s *OpenAIChatService) CreateChatCompletion(ctx context.Context, prompt string) (string, error) {
 	res, err := s.client.CreateChatCompletion(ctx, goopenai.ChatCompletionRequest{
 		Model: goopenai.GPT4o,
 		Messages: []goopenai.ChatCompletionMessage{
@@ -38,45 +38,24 @@ func (s *OpenAIChatService) GetAnswer(ctx context.Context, prompt string) (strin
 		return "", err
 	}
 
-	fmt.Println(res.Choices[0].Message.Content)
-
 	return res.Choices[0].Message.Content, nil
 }
 
 func (s *OpenAIChatService) GenerateImage(ctx context.Context, prompt string) (string, error) {
-	reqUrl := goopenai.ImageRequest{
-		Prompt:         prompt,
-		Size:           goopenai.CreateImageSize1024x1024,
+	req := goopenai.ImageRequest{
 		ResponseFormat: goopenai.CreateImageResponseFormatURL,
+		Size:           goopenai.CreateImageSize1024x1024,
+		Prompt:         prompt,
 		N:              1,
 	}
 
-	respUrl, err := s.client.CreateImage(ctx, reqUrl)
+	res, err := s.client.CreateImage(ctx, req)
 
 	if err != nil {
-		fmt.Printf("Image creation error: %v\n", err)
+		fmt.Printf("Image generation error: %v \n", err)
+
 		return "", err
 	}
 
-	fmt.Println(respUrl.Data[0].URL)
-
-	return respUrl.Data[0].URL, nil
-
-	// res, err := s.client.CreateImage(ctx, goopenai.ChatCompletionRequest{
-	// 	Model: goopenai.GPT4o,
-	// 	Messages: []goopenai.ChatCompletionMessage{
-	// 		{
-	// 			Role:    goopenai.ChatMessageRoleUser,
-	// 			Content: prompt,
-	// 		},
-	// 	},
-	// })
-
-	// if err != nil {
-	// 	return "", err
-	// }
-
-	// fmt.Println(res.Choices[0].Message.Content)
-
-	// return res.Choices[0].Message.Content, nil
+	return res.Data[0].URL, nil
 }
