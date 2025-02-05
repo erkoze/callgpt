@@ -43,6 +43,7 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 
 func (b *Bot) initHandlers() {
 	handlers.NewStartHandler(b.Tele)
+	handlers.NewIdHandler(b.Tele)
 
 	handlers.NewTextHandler(&handlers.TextHandlerDeps{
 		Bot:         b.Tele,
@@ -59,6 +60,7 @@ func (b *Bot) getCommands() []telebot.Command {
 	return []telebot.Command{
 		{Text: "start", Description: "Перезапуск"},
 		{Text: "img", Description: "Сгенерировать изображение"},
+		{Text: "id", Description: "Получить ваш идентификатор в Telegram"},
 	}
 }
 

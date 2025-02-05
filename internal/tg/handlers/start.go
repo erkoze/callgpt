@@ -8,10 +8,10 @@ import (
 
 type startHandler struct{}
 
-func NewStartHandler(bot *telebot.Bot) {
+func NewStartHandler(b *telebot.Bot) {
 	handler := &startHandler{}
 
-	bot.Handle("/start", handler.handle)
+	b.Handle("/start", handler.handle)
 }
 
 func (h *startHandler) handle(c telebot.Context) error {
