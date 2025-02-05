@@ -17,7 +17,7 @@ func NewStartHandler(bot *telebot.Bot) {
 func (h *startHandler) handle(c telebot.Context) error {
 	user := c.Sender()
 
-	str := fmt.Sprintf("Привет, %v! Это бот для удобного взаимодействия с нейросетями. \n Чтобы задать вопрос, просто напишите его.", user.Username)
+	str := fmt.Sprintf("Привет, %v! Это бот для удобного взаимодействия с нейросетью. \n Чтобы задать вопрос, просто напишите его.", user.Username)
 
 	return c.Send(str)
 }

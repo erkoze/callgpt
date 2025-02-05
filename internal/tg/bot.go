@@ -34,19 +34,26 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 		ChatService: deps.ChatService,
 	}
 
+	b.Tele.SetCommands(b.getCommands())
+
 	b.initHandlers()
 
 	return b, nil
 }
 
 func (b *Bot) initHandlers() {
-	handlers.NewHelloHandler(b.Tele)
 	handlers.NewStartHandler(b.Tele)
 
 	handlers.NewTextHandler(&handlers.TextHandlerDeps{
 		Bot:         b.Tele,
 		ChatService: b.ChatService,
 	})
+}
+
+func (b *Bot) getCommands() []telebot.Command {
+	return []telebot.Command{
+		{Text: "start", Description: "Перезапуск"},
+	}
 }
 
 func (b *Bot) Start() {
