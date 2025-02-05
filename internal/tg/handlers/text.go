@@ -3,6 +3,7 @@ package handlers
 import (
 	"callgpt/internal/chat"
 	"context"
+	"fmt"
 
 	"gopkg.in/telebot.v4"
 )
@@ -28,6 +29,8 @@ func (h *textHandler) handle(c telebot.Context) error {
 	if c.Sender().ID != 1077702537 {
 		return c.Send("Вам не разрешено использовать бота")
 	}
+
+	fmt.Printf("onText, userId: %v, content: %v \n", c.Sender().ID, c.Text())
 
 	message, err := h.chatService.CreateChatCompletion(context.Background(), c.Text())
 

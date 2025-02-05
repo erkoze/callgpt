@@ -40,6 +40,8 @@ func (h *imgHandler) handle(c telebot.Context) error {
 			"Например: /img кот и человек")
 	}
 
+	fmt.Printf("New /img command, userId: %v, prompt: %v \n", c.Sender().ID, prompt)
+
 	msg, err := h.Bot.Send(c.Chat(), "Генерация изображения...")
 
 	if err != nil {
