@@ -25,11 +25,15 @@ func NewTextHandler(deps *TextHandlerDeps) {
 }
 
 func (h *textHandler) handle(c telebot.Context) error {
+	if c.Sender().ID != 1077702537 {
+		return c.Send("Вам не разрешено использовать бота")
+	}
+
 	res, err := h.chatService.GetAnswer(context.Background(), c.Text())
 
 	if err != nil {
 		return err
 	}
 
-	return c.Send(res, telebot.ModeMarkdownV2)
+	return c.Send(res)
 }

@@ -9,6 +9,7 @@ import (
 
 func main() {
 	conf := configs.LoadConfig()
+	//_ = db.NewDb(&conf.Db)
 
 	openaiClient := openai.NewClient(conf.OpenAI)
 	openaiService := chat.NewOpenAIChatService(openaiClient)

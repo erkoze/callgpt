@@ -9,8 +9,8 @@ import (
 )
 
 type Bot struct {
-	tele        *telebot.Bot
-	chatService chat.ChatService
+	Tele        *telebot.Bot
+	ChatService chat.ChatService
 }
 
 type BotDeps struct {
@@ -30,8 +30,8 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 	}
 
 	b := &Bot{
-		tele:        tele,
-		chatService: deps.ChatService,
+		Tele:        tele,
+		ChatService: deps.ChatService,
 	}
 
 	b.initHandlers()
@@ -40,15 +40,15 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 }
 
 func (b *Bot) initHandlers() {
-	handlers.NewHelloHandler(b.tele)
-	handlers.NewStartHandler(b.tele)
+	handlers.NewHelloHandler(b.Tele)
+	handlers.NewStartHandler(b.Tele)
 
 	handlers.NewTextHandler(&handlers.TextHandlerDeps{
-		Bot:         b.tele,
-		ChatService: b.chatService,
+		Bot:         b.Tele,
+		ChatService: b.ChatService,
 	})
 }
 
 func (b *Bot) Start() {
-	b.tele.Start()
+	b.Tele.Start()
 }
