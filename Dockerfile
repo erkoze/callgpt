@@ -10,6 +10,8 @@ RUN go build -o /go/bin/bot cmd/main.go
 
 FROM debian:stable-slim
 
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=builder /go/bin/bot /app/bot
