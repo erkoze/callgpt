@@ -5,11 +5,11 @@ import (
 	"callgpt/internal/chat"
 	"callgpt/internal/openai"
 	"callgpt/internal/tg"
+	"fmt"
 )
 
 func main() {
 	conf := configs.LoadConfig()
-	//_ = db.NewDb(&conf.Db)
 
 	openaiClient := openai.NewClient(conf.OpenAI)
 	openaiService := chat.NewOpenAIChatService(openaiClient)
@@ -24,4 +24,6 @@ func main() {
 	}
 
 	b.Start()
+
+	fmt.Println("Bot is online!")
 }
