@@ -26,9 +26,9 @@ func NewTextHandler(deps *TextHandlerDeps) {
 }
 
 func (h *textHandler) handle(c telebot.Context) error {
-	if c.Sender().ID != 1077702537 {
-		return c.Send("Вам не разрешено использовать бота")
-	}
+	// if c.Sender().ID != 1077702537 {
+	// 	return c.Send("Вам не разрешено использовать бота")
+	// }
 
 	fmt.Printf("onText, userId: %v, content: %v \n", c.Sender().ID, c.Text())
 

@@ -28,9 +28,9 @@ func NewImgHandler(deps *ImgHandlerDeps) {
 }
 
 func (h *imgHandler) handle(c telebot.Context) error {
-	if c.Sender().ID != 1077702537 {
-		return c.Send("Вам не разрешено использовать бота")
-	}
+	// if c.Sender().ID != 1077702537 {
+	// 	return c.Send("Вам не разрешено использовать бота")
+	// }
 
 	prompt := c.Message().Payload
 

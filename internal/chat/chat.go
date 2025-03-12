@@ -45,6 +45,7 @@ func (s *OpenAIChatService) GenerateImage(ctx context.Context, prompt string) (s
 	req := goopenai.ImageRequest{
 		ResponseFormat: goopenai.CreateImageResponseFormatURL,
 		Size:           goopenai.CreateImageSize1024x1024,
+		Model:          goopenai.CreateImageModelDallE3,
 		Prompt:         prompt,
 		N:              1,
 	}
