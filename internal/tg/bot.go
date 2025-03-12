@@ -23,6 +23,9 @@ type BotDeps struct {
 func NewBot(deps *BotDeps) (*Bot, error) {
 	settings := telebot.Settings{
 		Token: deps.BotConfig.Token,
+		Poller: &telebot.LongPoller{
+			Timeout: 10,
+		},
 	}
 
 	tele, err := telebot.NewBot(settings)
