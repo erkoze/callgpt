@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"callgpt/internal/chat"
+	"callgpt/pkg/ratelimiter"
 	"context"
 	"fmt"
 
@@ -26,9 +27,9 @@ func NewTextHandler(deps *TextHandlerDeps) {
 }
 
 func (h *textHandler) handle(c telebot.Context) error {
-	// if c.Sender().ID != 1077702537 {
-	// 	return c.Send("Вам не разрешено использовать бота")
-	// }
+	if !ratelimiter.GlobalLimiter.Allow(c.Sender().ID) {
+		return c.Send("❌ Вы превысили лимит запросов (5 в час). Попробуйте позже.")
+	}
 
 	fmt.Printf("onText, userId: %v, content: %v \n", c.Sender().ID, c.Text())
 

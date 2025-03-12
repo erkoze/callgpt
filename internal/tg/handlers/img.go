@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"callgpt/internal/chat"
+	"callgpt/pkg/ratelimiter"
 	"context"
 	"fmt"
 
@@ -28,16 +29,16 @@ func NewImgHandler(deps *ImgHandlerDeps) {
 }
 
 func (h *imgHandler) handle(c telebot.Context) error {
-	// if c.Sender().ID != 1077702537 {
-	// 	return c.Send("Вам не разрешено использовать бота")
-	// }
-
 	prompt := c.Message().Payload
 
 	if prompt == "" || len(prompt) < 3 {
 		return c.Send("Чтобы нарисовать картинку, напишите команду /img и опишите то, что вы хотите получить.\n" +
 			"Запрос должен содержать больше 3 символов.\n\n" +
 			"Например: /img кот и человек")
+	}
+
+	if !ratelimiter.GlobalLimiter.Allow(c.Sender().ID) {
+		return c.Send("❌ Вы превысили лимит запросов (5 в час). Попробуйте позже.")
 	}
 
 	fmt.Printf("New /img command, userId: %v, prompt: %v \n", c.Sender().ID, prompt)
