@@ -15,8 +15,9 @@ func main() {
 	openaiService := chat.NewOpenAIChatService(openaiClient)
 
 	b, err := tg.NewBot(&tg.BotDeps{
-		Config:      &conf.Bot,
+		BotConfig:   &conf.Bot,
 		ChatService: openaiService,
+		AuthorData:  conf.AuthorData,
 	})
 
 	if err != nil {

@@ -11,16 +11,18 @@ import (
 type Bot struct {
 	Tele        *telebot.Bot
 	ChatService chat.ChatService
+	AuthorData  string
 }
 
 type BotDeps struct {
-	Config      *configs.BotConfig
+	BotConfig   *configs.BotConfig
 	ChatService chat.ChatService
+	AuthorData  string
 }
 
 func NewBot(deps *BotDeps) (*Bot, error) {
 	settings := telebot.Settings{
-		Token: deps.Config.Token,
+		Token: deps.BotConfig.Token,
 	}
 
 	tele, err := telebot.NewBot(settings)
@@ -32,6 +34,7 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 	b := &Bot{
 		Tele:        tele,
 		ChatService: deps.ChatService,
+		AuthorData:  deps.AuthorData,
 	}
 
 	b.Tele.SetCommands(b.getCommands())
@@ -42,7 +45,11 @@ func NewBot(deps *BotDeps) (*Bot, error) {
 }
 
 func (b *Bot) initHandlers() {
-	handlers.NewStartHandler(b.Tele)
+	handlers.NewStartHandler(&handlers.StartHandlerDeps{
+		Bot:        b.Tele,
+		AuthorData: b.AuthorData,
+	})
+
 	handlers.NewIdHandler(b.Tele)
 
 	handlers.NewTextHandler(&handlers.TextHandlerDeps{

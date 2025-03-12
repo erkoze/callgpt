@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	Bot    BotConfig
-	OpenAI OpenAIConfig
+	Bot        BotConfig
+	OpenAI     OpenAIConfig
+	AuthorData string
 }
 
 type BotConfig struct {
@@ -29,5 +30,6 @@ func LoadConfig() *Config {
 		OpenAI: OpenAIConfig{
 			APIKey: os.Getenv("OPEN_AI_API_KEY"),
 		},
+		AuthorData: os.Getenv("AUTHOR_DATA"),
 	}
 }
